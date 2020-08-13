@@ -19,8 +19,36 @@ window.ToDoList = {
             data: JSON.stringify(body)
 
         }).done(function (){
-            console.log('success');
+            ToDoList.getTasks();
         });
+    },
+
+    getTasks: function () {
+        $.ajax({
+            url: ToDoList.API_URL,
+            method: "GET",
+        }).done(function (response) {
+            ToDoList.displayTasks(JSON.parse(response));
+        });
+    },
+
+    getTaskRow: function (task) {
+        return `
+            <tr>
+                <td>${task.description}</td>
+                <td>${task.deadline}</td>
+                <td><input type="checkbox" class="mark-done" data-id=${task.id}></td>
+                <td><a href="#"  class="delete-link" data-id=${task.id}><i class="fas fa-trash-alt"></i></a></td>
+            </tr>
+        `
+    },
+
+    displayTasks: function (tasks) {
+        let tasksHtml = '';
+
+        tasks.forEach(task => tasksHtml += ToDoList.getTaskRow(task));
+
+        $('#tasks tbody').html(tasksHtml);
     },
 
     bindEvents: function () {
@@ -30,9 +58,6 @@ window.ToDoList = {
             ToDoList.createTask();
         });
     }
-
-
-
 };
-
+ToDoList.getTasks();
 ToDoList.bindEvents();
