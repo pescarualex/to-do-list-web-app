@@ -33,11 +33,16 @@ window.ToDoList = {
     },
 
     getTaskRow: function (task) {
+
+        let formatedDeadline = new Date(...task.deadline).toLocaleDateString("ro");
+
+        let checkedAtribute = task.done ? "checked" : "";
+
         return `
             <tr>
                 <td>${task.description}</td>
-                <td>${task.deadline}</td>
-                <td><input type="checkbox" class="mark-done" data-id=${task.id}></td>
+                <td>${formatedDeadline}</td>
+                <td><input type="checkbox" class="mark-done" data-id=${task.id} ${checkedAtribute}></td>
                 <td><a href="#"  class="delete-link" data-id=${task.id}><i class="fas fa-trash-alt"></i></a></td>
             </tr>
         `
